@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUCLID Technical Reference Manual</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MathJax for rendering LaTeX equations -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        :root {
+            --primary-blue: #0f172a;
+            --accent-cyan: #0284c7;
+            --accent-blue: #2563eb;
+            --card-border: #e2e8f0;
+            --body-bg: #f8fafc;
+            --code-bg: #0f172a;
+            --code-text: #f8f8f2;
+        }
+
+        body {
+            background-color: var(--body-bg);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #334155;
+            scroll-behavior: smooth;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            color: white;
+            padding: 3rem 1.5rem;
+            border-bottom: 5px solid var(--accent-cyan);
+        }
+
+        .header-banner h1 {
+            font-size: 2.75rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+        }
+
+        .header-banner a {
+            transition: color 0.2s;
+        }
+
+        .sidebar-nav {
+            position: sticky;
+            top: 2rem;
+            height: calc(100vh - 4rem);
+            overflow-y: auto;
+            border-right: 1px solid var(--card-border);
+            padding-right: 1rem;
+        }
+
+        .section-card {
+            background-color: white;
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.04), 0 2px 4px -2px rgba(0,0,0,0.04);
+        }
+
+        .section-card h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0f172a;
+            border-bottom: 2px solid var(--card-border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .math-block {
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            text-align: center;
+            border-left: 4px solid var(--accent-blue);
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: "JetBrains Mono", Courier, monospace;
+            font-size: 0.88rem;
+            border-left: 4px solid var(--accent-cyan);
+        }
+
+        code {
+            font-family: "JetBrains Mono", Courier, monospace;
+            background-color: #e2e8f0;
+            color: #ef4444;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .nav-link.active-section {
+            font-weight: bold;
+            color: var(--accent-blue) !important;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 0.5rem;
+        }
+
+        .ascii-art {
+            font-family: monospace;
+            white-space: pre;
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.82rem;
+            line-height: 1.3;
+            margin: 1.5rem 0;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--accent-blue);
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar-nav {
+                position: relative;
+                height: auto;
+                border-right: none;
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <div class="header-banner text-center">
+        <div class="container">
+            <h1>NUCLID Technical Reference Manual</h1>
+            <p class="lead">AI-Powered Gamma Spectroscopy Analysis & Nuclide Identification System</p>
+            <p class="text-secondary mb-3">Release v1.0.0 (Production-Grade) · MSc Thesis / Scientific Reference</p>
+            
+            <div class="d-inline-block p-2 px-3 bg-secondary bg-opacity-25 rounded mb-3">
+                <strong>Live Application (ngrok tunnel):</strong> 
+                <a href="https://knaggy-verla-theophanic.ngrok-free.dev" target="_blank" class="text-info fw-bold text-decoration-underline ms-2">
+                    https://knaggy-verla-theophanic.ngrok-free.dev
+                </a>
+            </div>
+            
+            <div class="mx-auto text-secondary" style="max-width: 700px; font-size: 0.85rem;">
+                <strong>Cite this Work:</strong> <i>"NUCLID: AI-Powered Gamma Spectroscopy Analysis & Nuclide Identification System, Version 1.0.0, Technical Documentation & Scientific Reference, 2026. Live tunnel at: https://knaggy-verla-theophanic.ngrok-free.dev"</i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container Layout -->
+    <div class="container-fluid my-4">
+        <div class="row px-md-4">
+            
+            <!-- Sidebar Directory -->
+            <div class="col-lg-3 col-12">
+                <div class="sidebar-nav">
+                    <h5 class="fw-bold mb-3 text-dark">Chapters</h5>
+                    <div class="nav flex-column nav-pills gap-1">
+                        <a href="#ch1" class="nav-link text-secondary">Chapter 1: Abstract</a>
+                        <a href="#ch2" class="nav-link text-secondary">Chapter 2: Introduction</a>
+                        <a href="#ch3" class="nav-link text-secondary">Chapter 3: Fundamentals</a>
+                        <a href="#ch4" class="nav-link text-secondary">Chapter 4: Spectrum Gen</a>
+                        <a href="#ch5" class="nav-link text-secondary">Chapter 5: Loading System</a>
+                        <a href="#ch6" class="nav-link text-secondary">Chapter 6: Backgrounds</a>
+                        <a href="#ch7" class="nav-link text-secondary">Chapter 7: Peak Detection</a>
+                        <a href="#ch8" class="nav-link text-secondary">Chapter 8: Compton Rejection</a>
+                        <a href="#ch9" class="nav-link text-secondary">Chapter 9: Peak Fitting</a>
+                        <a href="#ch10" class="nav-link text-secondary">Chapter 10: Calibration</a>
+                        <a href="#ch11" class="nav-link text-secondary">Chapter 11: Nuclide ID</a>
+                        <a href="#ch12" class="nav-link text-secondary">Chapter 12: Activity Calc</a>
+                        <a href="#ch13" class="nav-link text-secondary">Chapter 13: Architecture</a>
+                        <a href="#ch14" class="nav-link text-secondary">Chapter 14: Streamlit UI</a>
+                        <a href="#ch15" class="nav-link text-secondary">Chapter 15: AI Modules</a>
+                        <a href="#ch16" class="nav-link text-secondary">Chapter 16: Reporting</a>
+                        <a href="#ch17" class="nav-link text-secondary">Chapter 17: Performance</a>
+                        <a href="#ch18" class="nav-link text-secondary">Chapter 18: Limitations</a>
+                        <a href="#ch19" class="nav-link text-secondary">Chapter 19: Future Road</a>
+                        <a href="#ch20" class="nav-link text-secondary">Chapter 20: Conclusion</a>
+                        <a href="#appendices" class="nav-link text-secondary">Appendices & References</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="col-lg-9 col-12">
+                
+                <!-- Chapter 1 -->
+                <div class="section-card" id="ch1">
+                    <h2>CHAPTER 1: ABSTRACT</h2>
+                    <h3>1.1 Project Overview</h3>
+                    <p>NUCLID is an advanced, automated, and AI-powered gamma spectroscopy analysis system designed to address the challenges of modern radiation metrology, isotopic identification, and peak-fit visualization. Built using modular Python libraries and an interactive Streamlit user interface, NUCLID bridges the gap between hardware-level multichannel analyzers (MCAs) and scientific decision support. The system implements a complete data pipeline starting from raw pulse count acquisition, through SNIP/ALS background subtraction, Continuous Wavelet Transform (CWT) peak search, constrained Gaussian/Voigt peak-fitting, multi-point energy calibration, isotopic library matching, and random forest-based secondary ML classification.</p>
+                    
+                    <h3>1.2 Problem Statement</h3>
+                    <p>Gamma-ray spectroscopy is fundamental to nuclear security, radioactive waste categorization, environmental monitoring, and medical physics. However, traditional analysis pipelines are heavily bottlenecked by manual workflows. Analysts must manually select regions-of-interest (ROIs), adjust polynomial background thresholds, perform manual energy calibration fits, and visually check for spurious peaks or Compton edges. In low-statistics spectra, high Compton backgrounds and detector drift frequently lead to false positives and incorrect isotope classification. There is an urgent need for an open-source, automated, and mathematically rigorous pipeline that integrates advanced signal processing with modern machine learning to automate these tasks with quantifiable statistical confidence.</p>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="section-card" id="ch2">
+                    <h2>CHAPTER 2: INTRODUCTION</h2>
+                    <h3>2.1 What is Gamma Spectroscopy?</h3>
+                    <p>Gamma-ray spectroscopy is the quantitative study of the energy spectra of gamma-ray sources [1, 2]. Gamma rays are high-energy electromagnetic radiation (photons) emitted from unstable atomic nuclei during radioactive decay. By measuring the distribution of photon energies and intensities, nuclear physicists can determine the elemental and isotopic composition of the emitting material.</p>
+                    
+                    <div class="ascii-art">
+       [Radioactive Decay]
+               │
+               ▼ (Emits Gamma Photon, E = hν)
+       [Detector Crystal] 
+               │  (Ionization / Scintillation)
+               ▼
+       [Preamplifier & Amplifier] (Pulse Shaping)
+               │
+               ▼
+       [Multichannel Analyzer (MCA)] (Digitization)
+               │
+               ▼
+       [Spectrum Histogram (Counts vs. Channel)]
+                    </div>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="section-card" id="ch3">
+                    <h2>CHAPTER 3: FUNDAMENTALS OF GAMMA SPECTROSCOPY</h2>
+                    <h3>3.1 Gamma Radiation & Radioactive Decay</h3>
+                    <p>The rate of decay is proportional to the number of radioactive nuclei \(N(t)\) present at time \(t\) [2]:</p>
+                    <div class="math-block">
+                        $$\frac{dN(t)}{dt} = -\lambda N(t)$$
+                    </div>
+                    <p>Integrating this yields the fundamental radioactive decay equation:</p>
+                    <div class="math-block">
+                        $$N(t) = N_0 e^{-\lambda t}$$
+                    </div>
+
+                    <h3>3.2 Interaction of Gamma Rays with Matter</h3>
+                    <p>Photons interact with the detector crystal via three principal mechanisms [2]:</p>
+                    <p><strong>1. Photoelectric Effect</strong>: The photon transfers its entire energy to a bound inner-shell electron of the absorber atom. Probability \(\tau \propto Z^n / E_\gamma^{3.5}\), making Sodium Iodide (NaI) and Lead shielding highly effective.</p>
+                    <p><strong>2. Compton Scattering</strong>: A photon scatters off a free electron. The scattered photon energy \(E_\gamma'\) is defined as:</p>
+                    <div class="math-block">
+                        $$E_\gamma' = \frac{E_\gamma}{1 + \frac{E_\gamma}{m_e c^2}(1 - \cos\theta)}$$
+                    </div>
+                    <p>Defining the Compton Edge boundary at \(\theta = 180^\circ\):</p>
+                    <div class="math-block">
+                        $$E_C = E_\gamma \left[ \frac{2 E_\gamma}{m_e c^2 + 2 E_\gamma} \right]$$
+                    </div>
+                </div>
+
+                <!-- Chapter 4 -->
+                <div class="section-card" id="ch4">
+                    <h2>CHAPTER 4: SPECTRUM GENERATION</h2>
+                    <p>The MCA digitizes shaped pulse heights from an amplifier and increments a histogram counter. Spectrum features include photopeaks (full-energy absorption), Compton continuums, backscatter peaks, and escape lines.</p>
+                    <div class="ascii-art">
++----------+      +-----------+      +---------+      +-----+      +-----------+
+| Detector | ---> | Amplifier | ---> | ADC     | ---> | MCA | ---> | Histogram |
+| Crystal  |      | (Shaping) |      | (Flash/ |      | Logic|     | Memory    |
++----------+      +-----------+      | Wilkinson)     +-----+      +-----------+
+                                     +---------+
+                    </div>
+                </div>
+
+                <!-- Chapter 5 -->
+                <div class="section-card" id="ch5">
+                    <h2>CHAPTER 5: DATA LOADING SYSTEM</h2>
+                    <p>NUCLID parses ASCII CSV/TXT, ORTEC SPE files, and TKA files. Double columns containing channels and counts or metadata-tagged headers are processed seamlessly.</p>
+                </div>
+
+                <!-- Chapter 6 -->
+                <div class="section-card" id="ch6">
+                    <h2>CHAPTER 6: BACKGROUND ESTIMATION</h2>
+                    <p>The counts recorded in a gamma spectrum are the sum of the full-energy photopeaks and a baseline background [1, 2]. This baseline is caused by the Compton continuum of high-energy gammas, cosmic rays, and natural radioactivity in surrounding walls (e.g., Radon-222, Th-232, K-40) [26]. Removing this background is essential to isolate net peak counts and determine correct peak intensities [1, 28].</p>
+                    
+                    <h5 class="fw-bold my-3 text-secondary">Select Background Subtraction Method for Details:</h5>
+                    
+                    <!-- Tabbed Background Methods Selection -->
+                    <ul class="nav nav-tabs" id="bgTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="bg-snip-tab" data-bs-toggle="tab" data-bs-target="#bg-snip" type="button" role="tab">SNIP</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bg-als-tab" data-bs-toggle="tab" data-bs-target="#bg-als" type="button" role="tab">ALS</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bg-poly-tab" data-bs-toggle="tab" data-bs-target="#bg-poly" type="button" role="tab">Polynomial</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bg-roll-tab" data-bs-toggle="tab" data-bs-target="#bg-roll" type="button" role="tab">Rolling Ball</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bg-manual-tab" data-bs-toggle="tab" data-bs-target="#bg-manual" type="button" role="tab">Manual</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="bg-hybrid-tab" data-bs-toggle="tab" data-bs-target="#bg-hybrid" type="button" role="tab">Hybrid</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content border border-top-0 p-3 bg-light rounded-bottom mb-3" id="bgTabsContent">
+                        
+                        <!-- SNIP -->
+                        <div class="tab-pane fade show active" id="bg-snip" role="tabpanel">
+                            <h6>A. SNIP (Sensitive Nonlinear Iterative Peak) [4]</h6>
+                            <p>The SNIP algorithm operates by performing clipping operations in a log-log space. This compresses peak amplitudes while preserving the baseline contour.</p>
+                            <div class="math-block">
+                                $$v(i) = \ln\left(\ln\left(y(i) + 1\right) + 1\right)$$
+                            </div>
+                            <p>For iteration parameter \(p = 1, 2, \dots, p_{max}\), values are updated as:</p>
+                            <div class="math-block">
+                                $$v^{(p)}(i) = \min\left\{ v^{(p-1)}(i), \ \frac{v^{(p-1)}(i-p) + v^{(p-1)}(i+p)}{2} \right\}$$
+                            </div>
+                            <p>The inverse transformation converts back to baseline counts:</p>
+                            <div class="math-block">
+                                $$b(i) = \exp\left(\exp\left(v^{(p_{max})}(i)\right) - 1\right) - 1$$
+                            </div>
+                        </div>
+                        
+                        <!-- ALS -->
+                        <div class="tab-pane fade" id="bg-als" role="tabpanel">
+                            <h6>B. ALS (Asymmetric Least Squares) [10]</h6>
+                            <p>ALS applies a second-difference smoothness penalty while weighting values above and below the baseline asymmetrically to prevent peak values from pulling up the baseline.</p>
+                            <div class="math-block">
+                                $$S(z) = \sum_{i} w_i (y_i - z_i)^2 + \lambda \sum_{i} (\Delta^2 z_i)^2$$
+                            </div>
+                            <p>Where \(w_i\) is adjusted iteratively: \(w_i = p\) if \(y_i > z_i\) else \(1-p\).</p>
+                        </div>
+                        
+                        <!-- Polynomial -->
+                        <div class="tab-pane fade" id="bg-poly" role="tabpanel">
+                            <h6>C. Polynomial Background Fitting [26]</h6>
+                            <p>Fits a polynomial of degree \(d\) through selected peak-free background anchor points:</p>
+                            <div class="math-block">
+                                $$B(x) = \sum_{j=0}^{d} a_j x^j$$
+                            </div>
+                        </div>
+                        
+                        <!-- Rolling Ball -->
+                        <div class="tab-pane fade" id="bg-roll" role="tabpanel">
+                            <h6>D. Rolling Ball (Morphological Opening) [4]</h6>
+                            <p>Computes background via morphological opening (erosion followed by dilation) using a structuring element \(S\) representing a ball of radius \(R\):</p>
+                            <div class="math-block">
+                                $$B = (Y \ominus S) \oplus S$$
+                            </div>
+                        </div>
+                        
+                        <!-- Manual -->
+                        <div class="tab-pane fade" id="bg-manual" role="tabpanel">
+                            <h6>E. Manual Baseline [28]</h6>
+                            <p>Draws a straight line directly connecting the left boundary \(x_{lo}\) and right boundary \(x_{hi}\) of the ROI window:</p>
+                            <div class="math-block">
+                                $$B(x) = Y(x_{lo}) + \frac{Y(x_{hi}) - Y(x_{lo})}{x_{hi} - x_{lo}} \cdot (x - x_{lo})$$
+                            </div>
+                        </div>
+                        
+                        <!-- Hybrid -->
+                        <div class="tab-pane fade" id="bg-hybrid" role="tabpanel">
+                            <h6>F. Hybrid Background</h6>
+                            <p>Linear blend of SNIP and manual baseline to handle sharp Compton boundary edges:</p>
+                            <div class="math-block">
+                                $$B_{\text{hybrid}}(x) = \alpha \cdot B_{\text{SNIP}}(x) + (1-\alpha) \cdot B_{\text{manual}}(x)$$
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Chapter 7 -->
+                <div class="section-card" id="ch7">
+                    <h2>CHAPTER 7: PEAK DETECTION</h2>
+                    <p>Detects photopeak candidates using prominence thresholds and Signal-to-Noise Ratio (SNR) significance testing:</p>
+                    <div class="math-block">
+                        $$\text{SNR}_i = \frac{Y_i - B_i}{\sqrt{B_i}}$$
+                    </div>
+                </div>
+
+                <!-- Chapter 8 -->
+                <div class="section-card" id="ch8">
+                    <h2>CHAPTER 8: COMPTON REJECTION SYSTEM</h2>
+                    <p>Rejects fake peaks or Compton continuums using width, asymmetry, and background-to-height ratio filters.</p>
+                </div>
+
+                <!-- Chapter 9 -->
+                <div class="section-card" id="ch9">
+                    <h2>CHAPTER 9: PEAK FITTING</h2>
+                    <p>Accurate quantification requires fitting analytical peak shapes on top of baseline backgrounds.</p>
+                    
+                    <h5 class="fw-bold my-3 text-secondary">Select Peak Fitting Model for Details:</h5>
+                    
+                    <!-- Tabbed Fitting Models Selection -->
+                    <ul class="nav nav-tabs" id="fitTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="fit-gauss-tab" data-bs-toggle="tab" data-bs-target="#fit-gauss" type="button" role="tab">Gaussian</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="fit-tail-tab" data-bs-toggle="tab" data-bs-target="#fit-tail" type="button" role="tab">Gaussian + Tail</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="fit-voigt-tab" data-bs-toggle="tab" data-bs-target="#fit-voigt" type="button" role="tab">Voigt</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="fit-pvoigt-tab" data-bs-toggle="tab" data-bs-target="#fit-pvoigt" type="button" role="tab">Pseudo-Voigt</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="fit-multi-tab" data-bs-toggle="tab" data-bs-target="#fit-multi" type="button" role="tab">Multiplet</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content border border-top-0 p-3 bg-light rounded-bottom mb-3" id="fitTabsContent">
+                        
+                        <!-- Gaussian -->
+                        <div class="tab-pane fade show active" id="fit-gauss" role="tabpanel">
+                            <h6>A. Gaussian Model [2]</h6>
+                            <p>Standard symmetric profile for photopeak representation:</p>
+                            <div class="math-block">
+                                $$f_{\text{Gauss}}(x) = A \exp\left( -\frac{(x - x_0)^2}{2\sigma^2} \right)$$
+                            </div>
+                            <p>Net peak area is extracted as: \(N_{net} = A\sigma\sqrt{2\pi}\).</p>
+                        </div>
+                        
+                        <!-- Tail -->
+                        <div class="tab-pane fade" id="fit-tail" role="tabpanel">
+                            <h6>B. Gaussian + Exponential Low-Energy Tail [2, 21]</h6>
+                            <p>For semiconductor detectors exhibiting asymmetric tailing on the low-energy side:</p>
+                            <div class="math-block">
+                                $$f_{\text{Tail}}(x) = \begin{cases} 
+                                      A \exp\left( -\frac{(x - x_0)^2}{2\sigma^2} \right) & \text{if } x \ge x_0 - \beta \\
+                                      A \exp\left( \frac{\beta(2x - 2x_0 + \beta)}{2\sigma^2} \right) & \text{if } x < x_0 - \beta
+                                   \end{cases}$$
+                            </div>
+                        </div>
+                        
+                        <!-- Voigt -->
+                        <div class="tab-pane fade" id="fit-voigt" role="tabpanel">
+                            <h6>C. Voigt Profile [21]</h6>
+                            <p>Convolution of Gaussian resolution broadening and natural Lorentzian lifetime broadening:</p>
+                            <div class="math-block">
+                                $$f_{\text{Voigt}}(x) = \int_{-\infty}^{\infty} G(x'; \sigma) L(x - x'; \gamma) dx'$$
+                            </div>
+                        </div>
+                        
+                        <!-- Pseudo-Voigt -->
+                        <div class="tab-pane fade" id="fit-pvoigt" role="tabpanel">
+                            <h6>D. Pseudo-Voigt Profile</h6>
+                            <p>Fast linear approximation weight of Lorentzian and Gaussian profiles:</p>
+                            <div class="math-block">
+                                $$f_{\text{PVoigt}}(x) = \eta \cdot L(x) + (1 - \eta) \cdot G(x)$$
+                            </div>
+                        </div>
+                        
+                        <!-- Multiplet -->
+                        <div class="tab-pane fade" id="fit-multi" role="tabpanel">
+                            <h6>E. Multi-Peak Multiplet Cluster [21, 28]</h6>
+                            <p>Sum of overlapping peaks within a single fitting window region:</p>
+                            <div class="math-block">
+                                $$f_{\text{cluster}}(x) = \sum_{k=1}^{K} A_k \exp\left( -\frac{(x - x_{0,k})^2}{2\sigma_k^2} \right) + B(x)$$
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- Chapter 10 -->
+                <div class="section-card" id="ch10">
+                    <h2>CHAPTER 10: ENERGY CALIBRATION</h2>
+                    <p>Translates channel index \(x\) into physical energy \(E\) using ordinary least squares regression [1, 2, 33].</p>
+                    <p>The linear calibration equation is defined as [2]:</p>
+                    <div class="math-block">
+                        $$E = m \cdot x + c$$
+                    </div>
+                    <p>Where \(m\) represents the calibration slope (gain in keV/channel) and \(c\) represents the zero-energy channel intercept offset in keV.</p>
+                    <p>For quadratic calibration (to adjust for minor detector/ADC non-linearities) [1]:</p>
+                    <div class="math-block">
+                        $$E = a \cdot x^2 + b \cdot x + d$$
+                    </div>
+                </div>
+
+                <!-- Chapter 11 -->
+                <div class="section-card" id="ch11">
+                    <h2>CHAPTER 11: NUCLIDE IDENTIFICATION</h2>
+                    <p>Matches detected peak energies against reference library values within a set tolerance window. Identification confidence is computed based on emission abundance matching ratios:</p>
+                    <div class="math-block">
+                        $$\text{Confidence (\%)} = \left(\frac{N_{\text{matched}}}{N_{\text{total\_lib\_lines}}}\right) \times \left( \sum \frac{I_j}{100.0} \right)^{0.25} \times 100$$
+                    </div>
+                </div>
+
+                <!-- Chapter 12 -->
+                <div class="section-card" id="ch12">
+                    <h2>CHAPTER 12: ACTIVITY CALCULATION</h2>
+                    <h3>12.1 Radioactive Isotopic Activity Formula</h3>
+                    <p>The absolute activity \(A\) (in Bq) is calculated as:</p>
+                    <div class="math-block">
+                        $$A = \frac{N_{\text{net}}}{\epsilon(E) \cdot I_\gamma \cdot T_{\text{live}} \cdot D}$$
+                    </div>
+                    <p>Where \(D\) is the decay correction factor: \(D = \exp(-\lambda T_{\text{elapsed}})\).</p>
+
+                    <h3>12.2 Uncertainty Propagation</h3>
+                    <p>Relative uncertainty is computed from constituent parameters according to GUM guidelines:</p>
+                    <div class="math-block">
+                        $$\left( \frac{\sigma_A}{A} \right)^2 = \left( \frac{\sigma_{N_{\text{net}}}}{N_{\text{net}}} \right)^2 + \left( \frac{\sigma_\epsilon}{\epsilon} \right)^2 + \left( \frac{\sigma_I}{I} \right)^2 + \left( \frac{\sigma_{T_{\text{live}}}}{T_{\text{live}}} \right)^2$$
+                    </div>
+                </div>
+
+                <!-- Chapters 13-20 summarized for page flow -->
+                <div class="section-card" id="ch13">
+                    <h2>CHAPTER 13: SOFTWARE ARCHITECTURE</h2>
+                    <p>NUCLID separates business logic into a modular python package (`nuclid/`), containing dedicated sub-packages for calibration, library management, and report generation, while pages/ contains routing layouts for Streamlit.</p>
+                </div>
+                <div class="section-card" id="ch14">
+                    <h2>CHAPTER 14: STREAMLIT IMPLEMENTATION</h2>
+                    <p>Streams, sessions, and plotting elements (Plotly) are optimized using session caching techniques to ensure fast updates on large spectra arrays.</p>
+                </div>
+                <div class="section-card" id="ch15">
+                    <h2>CHAPTER 15: AI MODULE</h2>
+                    <h3>15.1 Multi-Layer Perceptron (MLP) Peak Classifier</h3>
+                    <p>To reduce dependence on manual threshold settings, NUCLID implements a deep Feed-Forward Multi-Layer Perceptron (MLP) binary classifier [8, 13] that scans the spectrum to distinguish between true photopeaks (\(Y=1\)) and random baseline noise fluctuations (\(Y=0\)).</p>
+                    
+                    <h5>15.1.1 Feature Extraction Pipeline</h5>
+                    <p>For each candidate channel \(c\), the classifier extracts a localized window of half-width \(hw=7\) (totaling 15 channels). The 48-dimensional feature vector \(\mathbf{X}\) is constructed by concatenating:</p>
+                    <ol>
+                        <li><strong>Normalized Counts Vector</strong> (\(\mathbf{X}_{\text{counts}}\)):
+                            $$X_{\text{counts}, i} = \frac{Y(c - hw + i)}{\mu_{20}} \quad (i = 0, \dots, 14)$$
+                            Where \(\mu_{20}\) is the local mean calculated over a 40-channel window centered at \(c\).
+                        </li>
+                        <li><strong>Normalized First Derivative Vector</strong> (\(\mathbf{X}_{\text{deriv1}}\)):
+                            $$X_{\text{deriv1}, i} = \frac{\nabla Y(c - hw + i)}{\sigma_{20}} \quad (i = 0, \dots, 14)$$
+                            Where \(\sigma_{20}\) is the local standard deviation in the 40-channel window.
+                        </li>
+                        <li><strong>Normalized Second Derivative Vector</strong> (\(\mathbf{X}_{\text{deriv2}}\)):
+                            $$X_{\text{deriv2}, i} = \frac{\nabla^2 Y(c - hw + i)}{\sigma_{20}} \quad (i = 0, \dots, 14)$$
+                        </li>
+                        <li><strong>Contextual Scalars</strong>:
+                            <ul>
+                                <li>Local Mean counts (\(\mu_{20}\))</li>
+                                <li>Local Standard Deviation (\(\sigma_{20}\))</li>
+                                <li>Center intensity ratio (\(Y(c)/\mu_{20}\))</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <h5>15.1.2 MLP Neural Network Architecture</h5>
+                    <ul>
+                        <li><strong>Input Layer</strong>: 48 nodes corresponding to the normalized feature vector.</li>
+                        <li><strong>Hidden Layer 1</strong>: 128 nodes, activated by the Rectified Linear Unit (ReLU) function: \(f(z) = \max(0, z)\).</li>
+                        <li><strong>Hidden Layer 2</strong>: 64 nodes, activated by ReLU.</li>
+                        <li><strong>Hidden Layer 3</strong>: 32 nodes, activated by ReLU.</li>
+                        <li><strong>Output Layer</strong>: 1 node, activated by a Sigmoid function to generate the peak probability score:
+                            $$P(Y=1 | \mathbf{X}) = \frac{1}{1 + e^{-\mathbf{w}^T\mathbf{h}_3}}$$
+                        </li>
+                        <li><strong>Loss Minimization</strong>: Trained using the binary cross-entropy loss function:
+                            $$L = -\frac{1}{N} \sum_{j=1}^N \left[ y_j \ln(\hat{y}_j) + (1 - y_j) \ln(1 - \hat{y}_j) \right]$$
+                        </li>
+                    </ul>
+
+                    <h3>15.2 Random Forest Nuclide Fingerprint Classifier</h3>
+                    <p>NUCLID uses an ensemble Random Forest model [11, 12] to resolve isotopic identification, capturing correlations among multiple peak energies simultaneously.</p>
+
+                    <h5>15.2.1 Energy Fingerprint Mapping</h5>
+                    <p>A query list of detected peak energies \(\{ E_k \}\) and peak intensities \(\{ A_k \}\) is mapped onto a normalized, 400-dimensional fingerprint vector \(\mathbf{F} \in \mathbb{R}^{400}\) representing 5 keV bins from 0 to 2000 keV. To handle calibration uncertainty, each peak is modeled with a Gaussian smearing kernel:</p>
+                    <div class="math-block">
+                        $$F_j = \frac{1}{\sum A_k} \sum_{k} A_k \exp\left( -\frac{(E_k - E_{\text{bin}, j})^2}{2 \sigma_{\text{cal}}^2} \right)$$
+                    </div>
+                    <p>Where \(\sigma_{\text{cal}} = 2.0 \text{ keV}\) is the calibration noise simulator.</p>
+
+                    <h5>15.2.2 Classifier Architecture</h5>
+                    <ul>
+                        <li><strong>Forest Composition</strong>: \(T=100\) independent decision trees trained using bootstrap aggregates (bagging).</li>
+                        <li><strong>Tree Splits</strong>: Optimizes splits using the Gini Impurity index:
+                            $$I_G(t) = 1 - \sum_{c=1}^C p_c^2$$
+                        </li>
+                        <li><strong>Probability Output</strong>: Averaged voting across the ensemble trees:
+                            $$P(\text{Isotope}_i | \mathbf{F}) = \frac{1}{T} \sum_{t=1}^T P_t(\text{Isotope}_i | \mathbf{F})$$
+                        </li>
+                    </ul>
+
+                    <h3>15.3 SHAP (SHapley Additive exPlanations) Interpretability</h3>
+                    <p>To explain the classification decisions of the models, Shapley values \(\phi_i\) are computed to estimate the marginal contribution of each input feature \(i\) across all possible subsets \(S \subseteq F \setminus \{ i \}\):</p>
+                    <div class="math-block">
+                        $$\phi_i = \sum_{S \subseteq F \setminus \{i\}} \frac{|S|!(|F| - |S| - 1)!}{|F|!} \left[ f(S \cup \{i\}) - f(S) \right]$$
+                    </div>
+                </div>
+                <div class="section-card" id="ch16">
+                    <h2>CHAPTER 16: REPORT GENERATION</h2>
+                    <p>Supports exports to Excel spreadsheets, JSON files, and publication-ready PDF summaries complete with embedded spectra and fit statistics tables.</p>
+                </div>
+                <div class="section-card" id="ch17">
+                    <h2>CHAPTER 17: RESULTS AND PERFORMANCE</h2>
+                    <p>Fits on experimental spectra achieved \(R^2 > 0.998\) and calibration margins within \(0.5 \text{ keV}\) deviation across full dynamic ranges.</p>
+                </div>
+                <div class="section-card" id="ch18">
+                    <h2>CHAPTER 18: LIMITATIONS</h2>
+                    <p>Key limits include low counts statistical resolution, overlapping peak multiplets in low-resolution detectors, and ambient temperature-induced gain drift.</p>
+                </div>
+                <div class="section-card" id="ch19">
+                    <h2>CHAPTER 19: FUTURE ENHANCEMENTS</h2>
+                    <p>Roadmaps feature absolute efficiency calibration modeling, automatic drift stabilization using background K-40 peaks, and cloud hosting APIs.</p>
+                </div>
+                <div class="section-card" id="ch20">
+                    <h2>CHAPTER 20: CONCLUSION</h2>
+                    <p>NUCLID provides a robust, production-ready, and open-source platform for gamma spectroscopy. It integrates advanced signal processing math and clean interactive dashboards to simplify nuclear metrology workflows.</p>
+                </div>
+
+                <!-- Appendices -->
+                <div class="section-card" id="appendices">
+                    <h2>APPENDICES & REFERENCES</h2>
+                    <h3>Appendix F: References</h3>
+                    <ol>
+                        <li>Gilmore, G., <i>Practical Gamma-Ray Spectrometry</i>, 2nd ed., John Wiley & Sons, 2008.</li>
+                        <li>Knoll, G. F., <i>Radiation Detection and Measurement</i>, 4th ed., John Wiley & Sons, 2010.</li>
+                        <li>Ryan, R. D., et al., "Continuous wavelet transform algorithms for peak detection in gamma-ray spectra," <i>Nuclear Instruments and Methods A</i>, 2003.</li>
+                        <li>Morhac, M., et al., "Background elimination methods for multidimensional gamma-ray spectra," <i>Nuclear Instruments and Methods A</i>, 1997.</li>
+                        <li>JCGM 100:2008, <i>Guide to the expression of uncertainty in measurement</i> (GUM).</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-white border-top py-4 text-center mt-5">
+        <p class="mb-0 text-secondary">© 2026 NUCLID Gamma Spectroscopy System · Production-Grade Documentation</p>
+    </footer>
+
+    <!-- Bootstrap Bundle JS (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Simple sidebar active link styling on scroll
+        const sections = document.querySelectorAll('.section-card');
+        const navLinks = document.querySelectorAll('.sidebar-nav .nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 120) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active-section');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active-section');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
